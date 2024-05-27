@@ -58,8 +58,16 @@ let catalogArr = [
   },
 ];
 
+// --- получаем данные и помещаем их в хранилище ---
+let data = localStorage.getItem('shopping-cart__list');
+
 // --- массив товаров в корзине ---
 let shoppingCartArr = [];
+
+// парсим данные и помещаем в массив
+if (data !== '' && data !== null) {
+  shoppingCartArr = JSON.parse(data);
+};
 
 // проверка наличия товаров в корзине
 function showEmptyCart() {
@@ -139,6 +147,9 @@ function getCatalogItem(index, catalog) {
   let itemBtn = getButton('+ Add To Cart', 'catalog__btn');
   itemBtn.onclick = function () {
     shoppingCartArr.push(catalog);
+
+    localStorage.setItem('shopping-cart__list', JSON.stringify(shoppingCartArr));
+
     renderShoppingCartList(shoppingCartArr); // перерисовка списка товаров в корзине
   };
 
@@ -204,6 +215,12 @@ showCartBtn.onclick = function () {
     showCartBtn.classList.remove('cart-btn--opened');
     shoppingCartBox.classList.add('hidden');
   };
+};
+
+// получаемые данные из массива используем как аргументы
+// для функции создания новой записи
+for (const item of shoppingCartArr) {
+  renderShoppingCartList(item);
 };
 
 // --- РАЗМЕЩАЕМ ЭЛЕМЕНТЫ НА СТРАНИЦЕ ---
