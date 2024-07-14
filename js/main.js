@@ -69,6 +69,11 @@ if (data !== '' && data !== null) {
   shoppingCartArr = JSON.parse(data);
 };
 
+// --- сохраняем / перезаписываем localStorage ---
+function saveList(keyName, keyValue) {
+  return localStorage.setItem(keyName, JSON.stringify(keyValue));
+};
+
 // проверка наличия товаров в корзине
 function showEmptyCart() {
   let noItem = document.createElement('li');
@@ -148,7 +153,7 @@ function getCatalogItem(index, catalog) {
   itemBtn.onclick = function () {
     shoppingCartArr.push(catalog);
 
-    localStorage.setItem('shopping-cart__list', JSON.stringify(shoppingCartArr));
+    saveList('shopping-cart__list', shoppingCartArr); // перерисовка localStorage
 
     renderShoppingCartList(shoppingCartArr); // перерисовка списка товаров в корзине
   };
@@ -180,7 +185,8 @@ function getShoppingCartItem(index, cart) {
   // кнопка удаления товара
   let removeBtn = getButton('Remove', 'shopping-cart__remove-btn');
   removeBtn.onclick = function () {
-    shoppingCartArr.splice(index, 1);
+    shoppingCartArr.splice(index, 1); // удаление из массива товаров в корзине
+    saveList('shopping-cart__list', shoppingCartArr); // перерисовка localStorage
     renderShoppingCartList(shoppingCartArr); // перерисовка списка товаров в корзине
   };
 
